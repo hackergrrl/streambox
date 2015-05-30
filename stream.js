@@ -1,10 +1,32 @@
+var fs = require('fs');
 var net = require('net');
 var combiner = require('stream-combiner2');
 
-// var endpoint = 'localhost';
-var endpoint = '192.168.0.123';
+var machines = JSON.parse(fs.readFileSync('./MACHINES').toString());
 
-var serverStream = net.connect(5000, endpoint, function() {
+var argv = require('minimist')(process.argv.slice(2));
+
+if (argv._.length <= 0) {
+  console.log("Machine target argument required.");
+  printAvailableMachines();
+  return;
+}
+
+function printAvailableMachines() {
+  console.log('Available machines:');
+  for (var i in machines) {
+    console.log(' ' + i);
+  }
+}
+
+var machine = machines[argv._[0]];
+if (!machine) {
+  printAvailableMachines();
+  return;
+}
+machine.port = machine.port || 5000;
+
+var serverStream = net.connect(machine.port, machine.ip, function() {
   var stream = combiner(process.stdin, serverStream, process.stdout);
 
   stream.on('error', function(e) {
@@ -26,3 +48,4 @@ var serverStream = net.connect(5000, endpoint, function() {
     console.log('unpipe');
   });
 });
+
