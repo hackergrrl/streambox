@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "comandante": "0.0.1",
-    "stream-combiner2": "^1.0.2"
+    "mkfifo": "^0.1.1",
+    "stream-combiner2": "^1.0.2",
+    "tmp": "0.0.26"
   },
   "devDependencies": {
     "tape": "*"

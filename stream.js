@@ -1,7 +1,10 @@
 var net = require('net');
 var combiner = require('stream-combiner2');
 
-var serverStream = net.connect(5000, 'localhost', function() {
+// var endpoint = 'localhost';
+var endpoint = '192.168.0.123';
+
+var serverStream = net.connect(5000, endpoint, function() {
   var stream = combiner(process.stdin, serverStream, process.stdout);
 
   stream.on('error', function(e) {
