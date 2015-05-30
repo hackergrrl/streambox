@@ -1,8 +1,20 @@
+var defined = require('defined');
+var path = require('path');
 var fs = require('fs');
 var net = require('net');
 var combiner = require('stream-combiner2');
 
-var machines = JSON.parse(fs.readFileSync('./MACHINES').toString());
+var HOME = defined(process.env.HOME, process.env.USERDIR);
+var DIR = defined(process.env.STREAMBOX_PATH, path.join(HOME, '.config/streambox'));
+
+var machines;
+try {
+  machines = JSON.parse(fs.readFileSync(path.join(DIR, 'machines')).toString());
+} catch (e) {
+  console.log('No \'machines\' config file found. Create one in ~/.config/streambox.');
+  console.error(e);
+  return;
+}
 
 var argv = require('minimist')(process.argv.slice(2));
 
