@@ -14,13 +14,8 @@
     "test": "tape test/*.js"
   },
   "dependencies": {
-    "comandante": "0.0.1",
     "defined": "^1.0.0",
     "minimist": "^1.1.1",
-    "mkfifo": "^0.1.1",
-    "stream-combiner2": "^1.0.2",
-    "through2": "^0.6.5",
-    "tmp": "0.0.26"
   },
   "devDependencies": {
     "tape": "*"
