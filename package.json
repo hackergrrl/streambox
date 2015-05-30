@@ -1,9 +1,12 @@
 {
-  "name": "stream-machine",
+  "name": "streambox",
   "description": "Stream anything anywhere.",
   "version": "0.0.0",
+  "bin": {
+    "streambox": "bin/cmd.js"
+  },
   "repository": {
-    "url": "git://github.com/noffle/stream-machine.git"
+    "url": "git://github.com/noffle/streambox.git"
   },
   "main": "index.js",
   "scripts": {
@@ -11,6 +14,7 @@
   },
   "dependencies": {
     "comandante": "0.0.1",
+    "defined": "^1.0.0",
     "minimist": "^1.1.1",
     "mkfifo": "^0.1.1",
     "stream-combiner2": "^1.0.2",

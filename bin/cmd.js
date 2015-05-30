@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var defined = require('defined');
 var net = require('net');
 var fs = require('fs');
 var run = require('comandante');
@@ -5,6 +9,9 @@ var combiner = require('stream-combiner2');
 var through = require('through2');
 var tmp = require('tmp');
 var mkfifo = require('mkfifo').mkfifoSync;
+
+var HOME = defined(process.env.HOME, process.env.USERDIR);
+var DIR = defined(process.env.STREAMBOX_PATH, path.join(HOME, '.config/streambox'));
 
 net.createServer(function(clientStream) {
   handlerOmxplayer(clientStream);
