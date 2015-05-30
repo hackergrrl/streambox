@@ -1,0 +1,19 @@
+{
+  "name": "stream-machine",
+  "description": "Stream anything anywhere.",
+  "version": "0.0.0",
+  "repository": {
+    "url": "git://github.com/noffle/stream-machine.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "dependencies": {
+    "comandante": "0.0.1",
+    "stream-combiner2": "^1.0.2"
+  },
+  "devDependencies": {
+    "tape": "*"
+  }
+}
