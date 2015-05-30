@@ -1,7 +1,7 @@
 {
   "name": "streambox",
   "description": "Stream anything anywhere.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "bin": {
     "streambox-server": "bin/server-cmd.js",
     "streambox": "bin/client-cmd.js"
