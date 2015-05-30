@@ -3,42 +3,23 @@
 var path = require('path');
 var defined = require('defined');
 var net = require('net');
-var fs = require('fs');
 var run = require('comandante');
 var combiner = require('stream-combiner2');
 var through = require('through2');
-var tmp = require('tmp');
-var mkfifo = require('mkfifo').mkfifoSync;
+
+var mktmpfifo = require('../mktmpfifo');
 
 var HOME = defined(process.env.HOME, process.env.USERDIR);
 var DIR = defined(process.env.STREAMBOX_PATH, path.join(HOME, '.config/streambox'));
 
 net.createServer(function(clientStream) {
-  handlerOmxplayer(clientStream);
+  // handlerOmxplayer(clientStream);
+  handlerMplayer(clientStream);
 }).listen(5000);
 
-function tempFifo(cb) {
-  // Generate a unique tempfile name
-  tmp.tmpName(function(err, fifoName) {
-    if (err) {
-      errorResponse(res, err, "tmp messed up");
-    }
-
-    // Create a temporary FIFO to feed video data into. This is necessary
-    // because some players (e.g. omxplayer) don't support input from stdin.
-    try {
-      mkfifo(fifoName, 0755);
-    } catch (e) {
-      errorResponse(res, e, "mkfifo messed up");
-    }
-    console.error("Created fifo: " + fifoName);
-    var fifo = fs.createWriteStream(fifoName);
-    cb(fifoName, fifo);
-  });
-}
 
 function handlerOmxplayer(clientStream) {
-  tempFifo(function(fifoName, fifoStream) {
+  mktmpfifo(function(fifoName, fifoStream) {
     var stream = clientStream.pipe(fifoStream);
     var cmd = run('omxplayer', [fifoName]);//.pipe(clientStream);
 
