@@ -3,7 +3,7 @@
   "description": "Stream anything anywhere.",
   "version": "0.1.0",
   "bin": {
-    "streambox-server": "bin/server-cmd.js"
+    "streambox-server": "bin/server-cmd.js",
     "streambox": "bin/client-cmd.js"
   },
   "repository": {
