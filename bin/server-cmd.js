@@ -53,11 +53,9 @@ net.createServer(function(clientStream) {
           if (chr === '\n') {
             foundType = true;
             console.error('Incoming stream type: ' + type);
-
-            createStreamOfType(stream, type);
-
+            createStreamOfType(stream, type).pipe(clientStream);
             this.push(chunk.slice(i+1));
-            return;
+            break;
           } else {
             type += chr;
           }
