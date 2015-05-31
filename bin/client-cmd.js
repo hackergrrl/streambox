@@ -20,8 +20,8 @@ try {
 
 var argv = require('minimist')(process.argv.slice(2));
 
-if (argv._.length <= 0) {
-  console.log("Machine target argument required.");
+if (argv._.length < 2) {
+  console.log("Usage: streambox machine-name type-string\n");
   printAvailableMachines();
   return;
 }
@@ -38,9 +38,14 @@ if (!machine) {
   printAvailableMachines();
   return;
 }
-machine.port = machine.port || 5000;
 
+var mimeishType = argv._[1];
+
+machine.port = machine.port || 5000;
 var serverStream = net.connect(machine.port, machine.ip, function() {
+
+  serverStream.write(mimeishType + '\n');
+
   var stream = combiner(process.stdin, serverStream, process.stdout);
 
   stream.on('error', function(e) {

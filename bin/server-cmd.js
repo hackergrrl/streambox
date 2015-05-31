@@ -4,6 +4,7 @@ var fs = require('fs');
 var defined = require('defined');
 var path = require('path');
 var net = require('net');
+var through = require('through2');
 
 var HOME = defined(process.env.HOME, process.env.USERDIR);
 var DIR = defined(
@@ -41,5 +42,25 @@ function loadEndpoints(endpointsDir) {
 }
 
 net.createServer(function(clientStream) {
+  var type = '';
+  var foundType = false;
+  clientStream
+    .pipe(through(function(chunk, enc, callback) {
+      if (!foundType) {
+        for (var i=0; i < chunk.length; i++) {
+          var chr = String.fromCharCode(chunk[i]);
+          if (chr === '\n') {
+            foundType = true;
+            console.error('Incoming stream type: ' + type);
+          } else {
+            type += chr;
+          }
+        }
+      } else {
+        this.push(chunk);
+      }
+      callback();
+    }))
+    .pipe(process.stdout);
 }).listen(5000);
 
