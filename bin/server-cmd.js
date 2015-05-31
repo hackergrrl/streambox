@@ -43,8 +43,9 @@ function loadEndpoints(endpointsDir) {
 
 net.createServer(function(clientStream) {
   var type = '';
+
   var foundType = false;
-  clientStream
+  var stream = clientStream
     .pipe(through(function(chunk, enc, callback) {
       if (!foundType) {
         for (var i=0; i < chunk.length; i++) {
@@ -52,6 +53,8 @@ net.createServer(function(clientStream) {
           if (chr === '\n') {
             foundType = true;
             console.error('Incoming stream type: ' + type);
+            createStreamOfType(stream, type)
+              .pipe(clientStream);
           } else {
             type += chr;
           }
@@ -60,7 +63,18 @@ net.createServer(function(clientStream) {
         this.push(chunk);
       }
       callback();
-    }))
-    .pipe(process.stdout);
+    }));
 }).listen(5000);
+
+
+function createStreamOfType(stream, type) {
+  for (var typeString in endpoints) {
+    if (!(new RegExp(typeString)).test(type)) {
+      continue;
+    }
+    console.error("Found matching endpoint for " + type);
+    return stream.pipe(endpoints[typeString]());
+  }
+  console.error("No endpoint for " + type);
+}
 
