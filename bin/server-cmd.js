@@ -53,8 +53,11 @@ net.createServer(function(clientStream) {
           if (chr === '\n') {
             foundType = true;
             console.error('Incoming stream type: ' + type);
-            createStreamOfType(stream, type)
-              .pipe(clientStream);
+
+            createStreamOfType(stream, type);
+
+            this.push(chunk.slice(i+1));
+            return;
           } else {
             type += chr;
           }
@@ -73,7 +76,7 @@ function createStreamOfType(stream, type) {
       continue;
     }
     console.error("Found matching endpoint for " + type);
-    return stream.pipe(endpoints[typeString]());
+    return endpoints[typeString](stream);
   }
   console.error("No endpoint for " + type);
 }
